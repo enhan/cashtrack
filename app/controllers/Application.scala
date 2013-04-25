@@ -33,4 +33,9 @@ object Application extends Controller {
     Ok(Json.toJson(Operation.allForAccount(id)))
   }
 
+  def newOperation(id:Long) = Action(parse.json){ request =>
+    Operation.create(Json.fromJson[Operation](request.body).get)
+    Ok
+  }
+
 }
