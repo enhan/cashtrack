@@ -20,6 +20,8 @@ case class Account(id:Pk[Long], name:String, initialBalance:Long)
 
 object Account{
 
+
+
   val account = {
     get[Pk[Long]]("id") ~
     get[String]("name")~
@@ -41,6 +43,17 @@ object Account{
 
   def create(account : Account){
     create(account.name, account.initialBalance)
+  }
+
+  def delete(id : Long){
+    DB.withConnection{
+      implicit c =>
+        SQL(s"delete from account where id = $id").executeUpdate()
+    }
+  }
+
+  def byId(l: Long):Option[Account] = DB.withConnection{
+    implicit c => SQL("select * from account").as(account.singleOpt)
   }
 
 

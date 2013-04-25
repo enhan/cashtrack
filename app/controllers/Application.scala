@@ -4,11 +4,12 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json._
 import models.Account
+import models.Operation
 import play.api.libs.functional.syntax._
 
 object Application extends Controller {
   
-  def accounts = Action{
+  def accounts = Action{ request =>
     Ok(Json.toJson(Account.all()))
   }
 
@@ -18,8 +19,18 @@ object Application extends Controller {
     Ok
   }
 
-  def deleteAccount(id:Long) = TODO
+  def deleteAccount(id:Long) = Action{
+    Account.delete(id)
+    Ok
+  }
 
 
+  def account(id:Long) = Action{ request =>
+    Ok(Json.toJson(Account.byId(id)))
+  }
+
+  def operations(id:Long) = Action{ request =>
+    Ok(Json.toJson(Operation.allForAccount(id)))
+  }
 
 }
