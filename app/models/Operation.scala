@@ -22,7 +22,7 @@ object Operation{
 
   def create(operation: Operation){
     DB.withConnection{ implicit c =>
-      SQL(s"insert into operation(label, diff, account) values (${operation.label}, ${operation.diff}, ${operation.account})").executeUpdate()
+      SQL(s"insert into operation(label, diff, account) values ('${operation.label}', ${operation.diff}, ${operation.account})").executeUpdate()
     }
   }
 

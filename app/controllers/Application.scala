@@ -34,7 +34,9 @@ object Application extends Controller {
   }
 
   def newOperation(id:Long) = Action(parse.json){ request =>
-    Operation.create(Json.fromJson[Operation](request.body).get)
+    val transformer = (__).json.update(__.read[JsObject].map{o => o ++ Json.obj("account" -> id)})
+    val jsObject: JsObject = request.body.transform(transformer).get
+    Operation.create(Json.fromJson[Operation](jsObject).get)
     Ok
   }
 
